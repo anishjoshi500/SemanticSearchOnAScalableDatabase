@@ -1,0 +1,82 @@
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+<script>
+    $(function() 
+{
+
+   var search = [];
+ $("#mythread").hide();
+$("#mydiv").hide();
+ $("#mybutton").unbind().click( function()
+{
+$("#mythread").show();
+$("#mydiv").show();
+var result = document.getElementById("textbox").value;
+   $.getJSON('http://localhost:8080/SemanticSearchHead/search?query='+result, function(data) 
+{
+	$("#result tbody > tr").remove();
+var result = document.getElementById("textbox").value;
+		console.log(result);
+     
+	//console.log(data.map[1][1]);
+ $.each(data.map, function(i, f) 
+{        console.log(f[1]);
+          var tblRow = "<tr>" + "<td>" +  "<a href='http://"+ f[3]+ "/download?filename="+f[0]+"'>" + f[0] + "</a>" + "</td>" +
+           "<td>" + f[2] + "</td>" +
+           "<td>" + f[1] + "</td>"+
+           "<td>" + f[3] + "</td>"+
+           "<td>" + 0 + "</td>"+ "</tr>"
+           $(tblRow).appendTo("#result tbody");
+     });
+   });
+});
+});
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.4.0/annyang.min.js"></script>
+<script>
+if (annyang) {
+
+   var commands = {
+ 
+  'search for *theValue': function(theValue) {
+  $('#taggp').val(theValue);
+}
+    };
+  annyang.addCommands(commands);
+
+  annyang.start();
+}
+</script>
+
+</head>
+
+<body bgcolor="#EDECB7">
+<center>
+<h1> <img src="http://localhost/Untitled.png"></h1>
+<br>
+<br>
+<b>Enter Search Query : </b><input type="text" id="taggp" style="height: 30px; width: 500px;">      <image type="image" id="mybutton" src="http://localhost/search-button-without-text-md.png" width="30" height="32" align="center"/><br>
+<br>
+<br>
+
+
+<div class="wrapper">
+<div class="profile" id="mydiv">
+   <table id= "result" border="2" bgcolor="#EDECB7" width="1000" height="200">
+  <thead id="mythread">
+            <th align="center">File Name</th>
+            <th align="center">Highlight</th>
+            <th align="center">Relevance Score</th>
+            <th align="center">Shard Location</th>
+        </thead>
+      <tbody>
+
+       </tbody>
+   </table>
+
+</div>
+</div>
+</center>
+</body>
+</html>
